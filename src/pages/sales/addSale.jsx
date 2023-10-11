@@ -53,6 +53,20 @@ export const AddSaleForm = ({ setToggle }) => {
 				</label>
 				<div className="flex justify-between my-4">
 					<button
+						disabled={
+							!newSale.itemName ||
+							!newSale.price ||
+							!newSale.quantity ||
+							!newSale.category
+						}
+						className={`${
+							!newSale.itemName ||
+							!newSale.price ||
+							!newSale.quantity ||
+							!newSale.category
+								? "cursor-not-allowed disabled"
+								: "cursor-pointer"
+						}`}
 						onClick={() => {
 							dispatch(addSale(newSale));
 							setToggle(false);

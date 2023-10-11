@@ -1,6 +1,7 @@
 import { useDispatch } from "react-redux";
 import { addItem, editItem } from "../../redux";
 import { useState } from "react";
+import { categories } from "./category";
 
 export const AddItems = ({
 	setToggle,
@@ -10,12 +11,15 @@ export const AddItems = ({
 	editingData,
 	isEditing,
 }) => {
+	const [switchCat, setSwitchCat] = useState(false);
 	const [newItems, setNewItems] = useState({
 		itemName: isEditing ? editingData.name : "",
 		price: isEditing ? editingData.price : 0,
 		quantity: isEditing ? editingData.quantity : 0,
+		category: isEditing ? editingData.category : "",
 	});
 	const dispatch = useDispatch();
+	console.log(newItems);
 
 	return (
 		<div className="flex flex-col fixed w-full top-0 bottom-0 left-0 right-0 bg-[#f6f6f64c] justify-center items-center">
@@ -62,8 +66,51 @@ export const AddItems = ({
 						}
 					/>
 				</label>
+
+				<label htmlFor="" className="flex flex-col gap-1 ">
+					Category
+					{switchCat ? (
+						<input
+							type="text"
+							placeholder="Category"
+							className="p-2 px-4 rounded"
+							// value={newItems.category}
+							onChange={(e) =>
+								setNewItems({ ...newItems, category: e.target.value })
+							}
+						/>
+					) : (
+						<select
+							onChange={(e) =>
+								e.target.value === "Other"
+									? setSwitchCat(true)
+									: setNewItems({ ...newItems, category: e.target.value })
+							}>
+							<option value="">Select Category</option>
+							{categories.map((elms) => (
+								<option value={elms.value}>{elms.name}</option>
+							))}
+							<option value="Other">Add other category</option>
+						</select>
+					)}
+				</label>
+
 				<div className="flex justify-between my-4">
 					<button
+						disabled={
+							!newItems.itemName ||
+							!newItems.price ||
+							!newItems.quantity ||
+							!newItems.category
+						}
+						className={`${
+							!newItems.itemName ||
+							!newItems.price ||
+							!newItems.quantity ||
+							!newItems.category
+								? "cursor-not-allowed disabled"
+								: "cursor-pointer"
+						}`}
 						onClick={() => {
 							if (isEditing) {
 								dispatch(editItem(editingData._id, newItems));
