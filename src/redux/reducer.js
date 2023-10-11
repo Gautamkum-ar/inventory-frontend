@@ -1,7 +1,15 @@
-import { ADD_ITEM, DATA_LOADED, REMOVE_ITEM, UPDATE_ITEM } from "./const";
+import {
+	ADD_ITEM,
+	ADD_SALE,
+	DATA_LOADED,
+	LOAD_SALE,
+	REMOVE_ITEM,
+	UPDATE_ITEM,
+} from "./const";
 
 const initialState = {
 	items: [],
+	sales: [],
 };
 
 export const itemReducer = (state = initialState, { type, payload }) => {
@@ -37,6 +45,18 @@ export const itemReducer = (state = initialState, { type, payload }) => {
 						  }
 						: item
 				),
+			};
+		}
+		case LOAD_SALE: {
+			return {
+				...state,
+				sales: payload,
+			};
+		}
+		case ADD_SALE: {
+			return {
+				...state,
+				sales: [...state.sales, payload],
 			};
 		}
 		default: {

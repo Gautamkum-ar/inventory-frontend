@@ -1,8 +1,10 @@
 import axios from "axios";
 import {
 	ADD_ITEM,
+	ADD_SALE,
 	DATA_LOADED,
 	LOADING,
+	LOAD_SALE,
 	REMOVE_ITEM,
 	UPDATE_ITEM,
 } from "./const";
@@ -52,4 +54,25 @@ export const editItem = (itemId, updatedItem) => async (dispatch) => {
 	} catch (error) {
 		dispatch({ type: "error" });
 	}
+};
+
+export const loadSales = () => async (dispatch) => {
+	try {
+		dispatch({ type: LOADING });
+		const response = await axios.get(`${baseurl}/sales/sales`);
+
+		dispatch({ type: LOAD_SALE, payload: response.data.data });
+	} catch (error) {
+		dispatch({ type: "error" });
+	}
+};
+
+export const addSale = (newSale) => async (dispatch) => {
+	try {
+		dispatch({ type: LOADING });
+		const response = await axios.post(`${baseurl}/sales/add-sale`, {
+			...newSale,
+		});
+		dispatch({ type: ADD_SALE, payload: response.data.data });
+	} catch (error) {}
 };
